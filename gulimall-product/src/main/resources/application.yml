@@ -1,0 +1,34 @@
+mybatis-plus:
+  type-aliases-package: com.hngc
+  mapper-locations: classpath:mappers/**/*.xml
+  global-config:
+    db-config:
+      id-type: auto
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:13306/gulimall_pms
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
+knife4j:
+  enable: true
+  openapi:
+    title: "管理系统"
+    description: "业务管理数据"
+    # aaa"
+    email: xuecheng-plus@outlook.com
+    concat: bgu
+    url: https://docs.xuecheng.com
+    version: v1.0.0
+    license: Apache 2.0
+    license-url: "https://xuecheng.com/"
+    terms-of-service-url: "https://xuecheng.com/"
+    group:
+      test1:
+        group-name: "管理系统"
+        api-rule: package
+        api-rule-resources:
+          - com.hngc.product
+#  basic:
+#    password: admin
+#    username: admin
