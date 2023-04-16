@@ -1,8 +1,8 @@
 package com.hngc.member.controller;
 
 import io.swagger.annotations.Api;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @since 2023-04
  */
 @Api(tags = "成长值变化历史记录")
-@Controller
+@RestController
 @RequestMapping("/growthChangeHistory")
 public class GrowthChangeHistoryController {
 
