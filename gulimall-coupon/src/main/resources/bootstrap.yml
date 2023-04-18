@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: gulimall-coupon
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      server-addr: localhost:8848 #配置中心地址
+      config:
+        file-extension: yaml
+        namespace: ae7fa632-46f0-4f61-9478-e92e521615c0
