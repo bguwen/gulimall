@@ -1,0 +1,24 @@
+server:
+  port: 8888
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: product_route
+          uri: lb://gulimall-product
+          predicates:
+            - Path=/api/product/**
+          filters:
+            - RewritePath=/api/product/(?<segment>.*),/$\{segment}
+        - id: admin_route
+          uri: lb://ruoyi
+          predicates:
+            - Path=/api/** #/system/**,/login,/getInfo,/getRouters,/register
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+  application:
+    # 应用名称
+    name: gulimall-gateway
+  profiles:
+    # 环境配置
+    active: dev
