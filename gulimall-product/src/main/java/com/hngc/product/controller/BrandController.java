@@ -1,5 +1,6 @@
 package com.hngc.product.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.common.utils.Result;
 import com.hngc.product.entity.Brand;
 import com.hngc.product.service.BrandService;
@@ -32,7 +33,7 @@ public class BrandController {
      */
     @GetMapping("list")
     public Result list() {
-        return Result.success().put("data", brandService.list());
+        return Result.success().put("data", brandService.list(new LambdaQueryWrapper<Brand>().orderByAsc(Brand::getSort)));
     }
 
     /**
@@ -54,7 +55,7 @@ public class BrandController {
      * @return
      */
     @DeleteMapping("delete")
-    public Result deleteBrand(List<Long> ids) {
+    public Result deleteBrand(@RequestBody List<Long> ids) {
         brandService.removeByIds(ids);
         return Result.success();
     }
