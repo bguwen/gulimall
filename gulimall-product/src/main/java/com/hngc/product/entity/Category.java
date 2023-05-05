@@ -1,14 +1,14 @@
 package com.hngc.product.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -18,6 +18,7 @@ import java.io.Serializable;
  * @author hn
  * @since 2023-04
  */
+@Data
 @Getter
 @Setter
 @TableName("pms_category")
@@ -53,4 +54,11 @@ public class Category implements Serializable {
 
     @ApiModelProperty("商品数量")
     private Integer productCount;
+    @ApiModelProperty("逻辑删除，0 - 未删除；-1 - 已删除")
+    @TableLogic(value = "0", delval = "1")
+    @TableField(value = "is_delete", fill = FieldFill.INSERT)
+    private Integer isDelete;
+
+    @TableField(exist = false)
+    private List<Category> children;
 }
