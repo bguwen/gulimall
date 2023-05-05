@@ -2,6 +2,7 @@ package com.hngc.product.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -47,4 +48,8 @@ public class Brand implements Serializable {
 
     @ApiModelProperty("排序")
     private Integer sort;
+
+    @ApiModelProperty("逻辑删除[0-未删除；1-已删除]")
+    @TableLogic
+    private Integer isDelete;
 }
