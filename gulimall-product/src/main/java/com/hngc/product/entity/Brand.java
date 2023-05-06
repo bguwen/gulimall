@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.common.valid.AddGroup;
+import com.common.valid.ListValue;
 import com.common.valid.UpdateGroup;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -50,7 +51,8 @@ public class Brand implements Serializable {
     private String descript;
 
     @ApiModelProperty("显示状态[0-不显示；1-显示]")
-    private Byte showStatus;
+    @ListValue(groups = {AddGroup.class, UpdateGroup.class})
+    private Integer showStatus;
 
     @ApiModelProperty("检索首字母")
     @NotNull(groups = {AddGroup.class, UpdateGroup.class})
