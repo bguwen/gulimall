@@ -8,7 +8,12 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.URL;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 /**
@@ -32,9 +37,12 @@ public class Brand implements Serializable {
     private Long brandId;
 
     @ApiModelProperty("品牌名")
+    @NotBlank(message = "品牌名不能为空")
     private String name;
 
     @ApiModelProperty("品牌logo地址")
+    @NotNull
+    @URL(message = "logo地址非法")
     private String logo;
 
     @ApiModelProperty("介绍")
@@ -44,9 +52,13 @@ public class Brand implements Serializable {
     private Byte showStatus;
 
     @ApiModelProperty("检索首字母")
+    @NotNull
+    @Pattern(regexp = "[a-zA-Z]",message = "必须为字母")
     private String firstLetter;
 
     @ApiModelProperty("排序")
+    @NotNull
+    @Min(0)
     private Integer sort;
 
     @ApiModelProperty("逻辑删除[0-未删除；1-已删除]")

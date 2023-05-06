@@ -142,7 +142,16 @@ public class Result extends HashMap<String, Object>
     {
         return Result.error(msg, null);
     }
-
+    /**
+     * 返回错误消息
+     *
+     * @param data 数据对象
+     * @return 错误消息
+     */
+    public static Result error(Object data)
+    {
+        return new Result(HttpStatus.ERROR,"操作失败", data);
+    }
     /**
      * 返回错误消息
      * 

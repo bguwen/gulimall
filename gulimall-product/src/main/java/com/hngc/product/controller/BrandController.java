@@ -6,6 +6,7 @@ import com.hngc.product.entity.Brand;
 import com.hngc.product.service.BrandService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -66,7 +67,7 @@ public class BrandController {
      * @return
      */
     @PostMapping("add")
-    public Result addBrand(@RequestBody Brand brand) {
+    public Result addBrand(@Validated @RequestBody Brand brand) {
         brandService.save(brand);
         return Result.success();
     }
