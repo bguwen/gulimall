@@ -1,0 +1,17 @@
+server:
+  port: 20000
+spring:
+  application:
+    # 应用名称
+    name: gulimall-third-party
+  profiles:
+    # 环境配置
+    active: dev
+  cloud:
+#阿里对象存储配置
+    alicloud:
+      access-key: LTAI5tE6hf6WZGr7jSSUTER7
+      secret-key: Rvwfiq03l9VSwMLJX5XeNPGViDcpbi
+      oss:
+        endpoint: oss-cn-shanghai.aliyuncs.com
+        bucket: guli-college2022
