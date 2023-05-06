@@ -2,6 +2,8 @@ package com.hngc.product.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.common.utils.Result;
+import com.common.valid.AddGroup;
+import com.common.valid.UpdateGroup;
 import com.hngc.product.entity.Brand;
 import com.hngc.product.service.BrandService;
 import io.swagger.annotations.Api;
@@ -44,7 +46,7 @@ public class BrandController {
      * @return
      */
     @PostMapping("update")
-    public Result updateBrand(@RequestBody Brand brand) {
+    public Result updateBrand(@Validated(UpdateGroup.class) @RequestBody Brand brand) {
         brandService.updateById(brand);
         return Result.success();
     }
@@ -67,7 +69,7 @@ public class BrandController {
      * @return
      */
     @PostMapping("add")
-    public Result addBrand(@Validated @RequestBody Brand brand) {
+    public Result addBrand(@Validated(AddGroup.class) @RequestBody Brand brand) {
         brandService.save(brand);
         return Result.success();
     }
