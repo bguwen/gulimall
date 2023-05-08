@@ -1,7 +1,10 @@
 package com.hngc.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.common.utils.PageParams;
 import com.hngc.product.entity.AttrGroup;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -13,4 +16,12 @@ import com.hngc.product.entity.AttrGroup;
  */
 public interface AttrGroupService extends IService<AttrGroup> {
 
+    /**
+     * 分页查询分类属性分组
+     *
+     * @param pageParams        分页条件
+     * @param attrGroupId 三级分类id
+     * @return
+     */
+    Map<String, Object> queryPage(PageParams pageParams, Long attrGroupId);
 }

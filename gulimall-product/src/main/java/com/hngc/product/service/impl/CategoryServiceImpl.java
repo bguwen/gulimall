@@ -31,7 +31,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
                 .filter(category -> category.getParentCid() == 0)
                 //设置一级分类子节点
                 .map(category -> {
-                    category.setChildren(getChildren(category, categoryAll));
+                    List<Category> children = getChildren(category, categoryAll);
+                    category.setChildren(children.size() > 0 ? children : null);
                     return category;
                 })
                 //排序
@@ -57,7 +58,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         return all.stream()
                 .filter(item -> Objects.equals(item.getParentCid(), category.getCatId()))
                 .map(item -> {
-                    item.setChildren(getChildren(item, all));
+                    List<Category> children = getChildren(item, all);
+                    item.setChildren(children.size() > 0 ? children : null);
                     return item;
                 }).sorted(Comparator.comparingInt(e -> (e.getSort() == null ? 0 : e.getSort())))
                 .collect(Collectors.toList());
