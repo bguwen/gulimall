@@ -1,6 +1,7 @@
 package com.hngc.product.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
@@ -9,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -44,4 +46,8 @@ public class AttrGroup implements Serializable {
 
     @ApiModelProperty("所属分类id")
     private Long catelogId;
+
+    @ApiModelProperty("完整分类路径")
+    @TableField(exist = false)
+    private List<Long> catelogPath;
 }
