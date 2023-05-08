@@ -48,14 +48,13 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupMapper, AttrGroup
         LambdaQueryWrapper<AttrGroup> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         if (catId != 0) {
             //检索关键字
-            lambdaQueryWrapper
-                    .eq(AttrGroup::getCatelogId, catId)
-                    .like(StringUtils.hasLength(pageParams.getKey()), AttrGroup::getAttrGroupName, pageParams.getKey())
-                    .or()
-                    .like(StringUtils.hasLength(pageParams.getKey()), AttrGroup::getAttrGroupId, pageParams.getKey())
-            ;
+            lambdaQueryWrapper.eq(AttrGroup::getCatelogId, catId);
         }
-
+        lambdaQueryWrapper
+                .orderByAsc(AttrGroup::getSort)
+                .like(StringUtils.hasLength(pageParams.getKey()), AttrGroup::getAttrGroupName, pageParams.getKey())
+                .or()
+                .like(StringUtils.hasLength(pageParams.getKey()), AttrGroup::getAttrGroupId, pageParams.getKey());
         Page<AttrGroup> pageResult = this.page(page, lambdaQueryWrapper);
         Map<String, Object> map = new HashMap<>();
             /*

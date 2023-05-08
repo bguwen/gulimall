@@ -2,10 +2,16 @@ package com.hngc.product.controller;
 
 import com.common.utils.PageParams;
 import com.common.utils.Result;
+import com.common.valid.AddGroup;
+import com.common.valid.UpdateGroup;
+import com.hngc.product.entity.AttrGroup;
 import com.hngc.product.service.AttrGroupService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -54,4 +60,38 @@ public class AttrGroupController {
         return Result.success().put("attrGroup", attrGroupService.getInfo(attrGroupId));
     }
 
+    /**
+     * 修改属性分组
+     *
+     * @param attrGroup
+     * @return
+     */
+    @PostMapping("update")
+    public Result update(@Validated({UpdateGroup.class}) @RequestBody AttrGroup attrGroup) {
+        attrGroupService.updateById(attrGroup);
+        return Result.success();
+    }
+
+    /**
+     * 新增属性分组
+     *
+     * @param attrGroup
+     * @return
+     */
+    @PostMapping("add")
+    public Result add(@Validated({AddGroup.class}) @RequestBody AttrGroup attrGroup) {
+        attrGroupService.save(attrGroup);
+        return Result.success();
+    }
+
+    /**
+     * 根据分组id批量删除属性分组
+     *
+     * @param attrGroupIds
+     * @return
+     */
+    @DeleteMapping("delete")
+    public Result delete(@RequestBody List<Long> attrGroupIds) {
+        return attrGroupService.removeBatchByIds(attrGroupIds) ? Result.success() : Result.error();
+    }
 }
