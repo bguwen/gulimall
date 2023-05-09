@@ -1,7 +1,10 @@
 package com.hngc.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.common.utils.PageParams;
 import com.hngc.product.entity.Attr;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -13,4 +16,20 @@ import com.hngc.product.entity.Attr;
  */
 public interface AttrService extends IService<Attr> {
 
+    /**
+     * 分页获取分类规格参数
+     *
+     * @param pageParams
+     * @param catelogId
+     * @return
+     */
+    Map<String, Object> queryPage(PageParams pageParams, Long catelogId);
+    /**
+     * 根据树子节点id递归查询父节点名称
+     *
+     * @param parentId     父id
+     * @param categoryName
+     * @return
+     */
+     void findParentName(Long parentId, Attr categoryName);
 }

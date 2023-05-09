@@ -1,6 +1,6 @@
 package com.hngc.product.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.common.utils.PageParams;
 import com.common.utils.Result;
 import com.common.valid.AddGroup;
 import com.common.valid.UpdateGroup;
@@ -30,13 +30,13 @@ public class BrandController {
     private BrandService brandService;
 
     /**
-     * 查询所有品牌
+     * 分页查询品牌
      *
      * @return
      */
-    @GetMapping("list")
-    public Result list() {
-        return Result.success().put("data", brandService.list(new LambdaQueryWrapper<Brand>().orderByAsc(Brand::getSort)));
+    @PostMapping("page")
+    public Result page(@RequestBody PageParams pageParams) {
+        return Result.success().put("page", brandService.queryPage(pageParams));
     }
 
     /**
@@ -62,6 +62,7 @@ public class BrandController {
         brandService.removeByIds(ids);
         return Result.success();
     }
+
     /**
      * 添加品牌
      *
@@ -74,4 +75,25 @@ public class BrandController {
         return Result.success();
     }
 
+    /**
+     * 根据分组id获取属性分组详情
+     *
+     * @param brandId
+     * @return
+     */
+    @GetMapping("info/{brandId}")
+    public Result getInfo(@PathVariable Long brandId) {
+        return Result.success().put("brand", brandService.getById(brandId));
+    }
+
+    /**
+     * 根据id修改状态
+     *
+     * @param brand
+     * @return
+     */
+    @PatchMapping("update/status")
+    public Result updateStatus( @RequestBody Brand brand) {
+        return brandService.updateById(brand) ? Result.success() : Result.error();
+    }
 }

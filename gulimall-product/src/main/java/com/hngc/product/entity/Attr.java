@@ -1,6 +1,7 @@
 package com.hngc.product.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
@@ -53,4 +54,11 @@ public class Attr implements Serializable {
 
     @ApiModelProperty("快速展示【是否展示在介绍上；0-否 1-是】，在sku中仍然可以调整")
     private Byte showDesc;
+
+    @ApiModelProperty("完整分类路径名称 如: “手机/手机通讯/手机”")
+    @TableField(exist = false)
+    private String catelogName;
+    @ApiModelProperty("分组名称 如: “主体”")
+    @TableField(exist = false)
+    private String groupName="";
 }

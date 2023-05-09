@@ -64,7 +64,7 @@ public class AttrGroup implements Serializable {
     @TableLogic
     private Integer isDelete;
 
-    @ApiModelProperty("完整分类路径")
+    @ApiModelProperty("完整分类路径id  如:   [2,34,225]")
     @TableField(exist = false)
     private List<Long> catelogPath;
 }

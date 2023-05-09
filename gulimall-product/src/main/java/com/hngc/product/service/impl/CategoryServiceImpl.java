@@ -7,6 +7,7 @@ import com.hngc.product.service.CategoryService;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -64,4 +65,24 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
                 }).sorted(Comparator.comparingInt(e -> (e.getSort() == null ? 0 : e.getSort())))
                 .collect(Collectors.toList());
     }
+
+    /**
+     * 根据树子节点递归查找父节点id
+     *
+     * @param catelogId 子节点id
+     * @param arrayList 包含子节点id及父节点id的集合
+     * @return
+     */
+    public List<Long> findParentPath(Long catelogId, LinkedList<Long> arrayList) {
+        //查出当前节点信息
+        Category category = this.getById(catelogId);
+        //当前节点id入栈
+        arrayList.push(catelogId);
+        if (category.getParentCid() != 0) {
+            //不是根节点，向上查询父节点
+            findParentPath(category.getParentCid(), arrayList);
+        }
+        return arrayList;
+    }
+
 }

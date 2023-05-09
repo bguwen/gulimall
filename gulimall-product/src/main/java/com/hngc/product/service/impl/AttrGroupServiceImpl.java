@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.common.utils.PageParams;
 import com.hngc.product.entity.AttrGroup;
-import com.hngc.product.entity.Category;
 import com.hngc.product.mapper.AttrGroupMapper;
 import com.hngc.product.service.AttrGroupService;
 import com.hngc.product.service.CategoryService;
@@ -84,11 +83,8 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupMapper, AttrGroup
     public AttrGroup getInfo(Long attrGroupId) {
         AttrGroup attrGroup = this.getById(attrGroupId);
         if (attrGroup != null) {
-            Category threeCategory = categoryService.getById(attrGroup.getCatelogId());
-            if (threeCategory != null) {
-                Category twoCategory = categoryService.getById(threeCategory.getParentCid());
-                attrGroup.setCatelogPath(Arrays.asList(twoCategory.getParentCid(), twoCategory.getCatId(), attrGroup.getCatelogId()));
-            }
+            LinkedList<Long> arrayList = new LinkedList<>();
+            attrGroup.setCatelogPath(categoryService.findParentPath(attrGroup.getCatelogId(), arrayList));
         }
         return attrGroup;
     }

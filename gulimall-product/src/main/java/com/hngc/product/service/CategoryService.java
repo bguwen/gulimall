@@ -3,6 +3,7 @@ package com.hngc.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hngc.product.entity.Category;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -24,7 +25,17 @@ public interface CategoryService extends IService<Category> {
 
     /**
      * 根据id批量删除节点
+     *
      * @param catIds
      */
     void removeMenuByIds(List<Long> catIds);
+
+    /**
+     * 根据树子节点递归查找父节点id
+     *
+     * @param catelogId 子节点id
+     * @param arrayList 包含子节点id及父节点id的集合
+     * @return
+     */
+    List<Long> findParentPath(Long catelogId, LinkedList<Long> arrayList);
 }

@@ -1,7 +1,10 @@
 package com.hngc.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.common.utils.PageParams;
 import com.hngc.product.entity.Brand;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -12,5 +15,13 @@ import com.hngc.product.entity.Brand;
  * @since 2023-04
  */
 public interface BrandService extends IService<Brand> {
+
+    /**
+     * 分页查询品牌
+     *
+     * @param pageParams
+     * @return
+     */
+    Map<String, Object> queryPage(PageParams pageParams);
 
 }
