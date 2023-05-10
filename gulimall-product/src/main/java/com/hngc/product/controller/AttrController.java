@@ -2,6 +2,7 @@ package com.hngc.product.controller;
 
 import com.common.utils.PageParams;
 import com.common.utils.Result;
+import com.hngc.product.entity.Attr;
 import com.hngc.product.service.AttrService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,28 @@ public class AttrController {
     @PostMapping("page/{catelogId}")
     public Result list(@RequestBody PageParams pageParams, @PathVariable Long catelogId) {
         return Result.success().put("page", attrService.queryPage(pageParams, catelogId));
+    }
+
+    /**
+     * 保存属性【规格参数，销售属性】
+     *
+     * @param attr
+     * @return
+     */
+    @PostMapping("save")
+    public Result save(@RequestBody Attr attr) {
+        return attrService.syncSave(attr) ? Result.success() : Result.error();
+    }
+
+    /**
+     * 根据id查询属性详情
+     *
+     * @param attrId
+     * @return
+     */
+    @PostMapping("info/{attrId}")
+    public Result info(@PathVariable Long attrId) {
+        return Result.success().put("attr", attrService.info(attrId));
     }
 
 }

@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -30,6 +31,14 @@ public class Attr implements Serializable {
     @ApiModelProperty("属性id")
     @TableId(value = "attr_id", type = IdType.AUTO)
     private Long attrId;
+
+    @ApiModelProperty("分组id")
+    @TableField(exist = false)
+    private Long attrGroupId;
+
+    @ApiModelProperty("完整分类路径id  如:   [2,34,225]")
+    @TableField(exist = false)
+    private List<Long> catelogPath;
 
     @ApiModelProperty("属性名")
     private String attrName;
@@ -60,5 +69,5 @@ public class Attr implements Serializable {
     private String catelogName;
     @ApiModelProperty("分组名称 如: “主体”")
     @TableField(exist = false)
-    private String groupName="";
+    private String groupName = "";
 }

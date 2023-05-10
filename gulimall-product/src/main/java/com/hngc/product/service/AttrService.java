@@ -31,5 +31,20 @@ public interface AttrService extends IService<Attr> {
      * @param categoryName
      * @return
      */
-     void findParentName(Long parentId, Attr categoryName);
+    void findParentName(Long parentId, Attr categoryName);
+
+    /**
+     * 保存属性信息，同步保存分组信息
+     * @param attr
+     * @return
+     */
+    boolean syncSave(Attr attr);
+
+    /**
+     * 根据id查询属性详情
+     *
+     * @param attrId
+     * @return
+     */
+    Attr info(Long attrId);
 }

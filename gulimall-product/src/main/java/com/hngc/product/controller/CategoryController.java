@@ -70,4 +70,15 @@ public class CategoryController {
     public Result updateMenu(@RequestBody List<Category> category) {
         return categoryService.updateBatchById(category) ? Result.success() : Result.error();
     }
+
+    /**
+     * 根据id查询商品三级分类详细信息
+     *
+     * @param catId
+     * @return
+     */
+    @GetMapping("info/{catId}")
+    public Result info(@PathVariable Long catId) {
+        return Result.success().put("data", categoryService.getById(catId));
+    }
 }

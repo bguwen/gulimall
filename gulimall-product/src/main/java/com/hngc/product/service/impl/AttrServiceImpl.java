@@ -17,10 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -109,6 +106,35 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
         if (category.getParentCid() != 0) {
             findParentName(category.getParentCid(), attr);
         }
+    }
+
+    @Override
+    public boolean syncSave(Attr attr) {
+        //查询分组信息
+        AttrGroup attrGroup = attrGroupService.getById(attr.getAttrGroupId());
+        if (attrGroup != null) {
+            attr.setGroupName(attrGroup.getAttrGroupName());
+        }
+        return this.save(attr);
+    }
+
+    @Override
+    public Attr info(Long attrId) {
+        Attr attr = this.getById(attrId);
+        if (attr == null) {
+            return null;
+        }
+        AttrGroup attrGroup = attrGroupService.getOne(new LambdaQueryWrapper<AttrGroup>()
+                .eq(attr.getGroupName() != null, AttrGroup::getAttrGroupName, attr.getGroupName())
+                .eq(attr.getCatelogId() != null, AttrGroup::getCatelogId, attr.getCatelogId())
+        );
+        //设置分组id
+        attr.setAttrGroupId(attrGroup.getAttrGroupId());
+        //设置完整路径
+        LinkedList<Long> linkedList = new LinkedList<>();
+        categoryService.findParentPath(attr.getCatelogId(), linkedList);
+        attr.setCatelogPath(linkedList);
+        return attr;
     }
 
 }
