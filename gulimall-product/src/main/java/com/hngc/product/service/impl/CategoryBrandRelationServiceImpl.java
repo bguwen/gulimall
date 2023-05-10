@@ -30,10 +30,6 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
 
     @Autowired
     private CategoryService categoryService;
-    @Override
-    public boolean syncUpdate(Long brandId, String brandName) {
-        return this.update(new LambdaQueryWrapper<CategoryBrandRelation>().eq(StringUtils.hasText(brandName), CategoryBrandRelation::getBrandName, brandName));
-    }
 
     @Override
     public List<CategoryBrandRelation> select(Long brandId) {
