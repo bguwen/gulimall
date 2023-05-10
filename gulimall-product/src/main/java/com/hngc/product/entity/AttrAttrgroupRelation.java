@@ -38,4 +38,12 @@ public class AttrAttrgroupRelation implements Serializable {
 
     @ApiModelProperty("属性组内排序")
     private Integer attrSort;
+
+    public AttrAttrgroupRelation() {
+    }
+
+    public AttrAttrgroupRelation(Long attrId, Long attrGroupId) {
+        this.attrId = attrId;
+        this.attrGroupId = attrGroupId;
+    }
 }

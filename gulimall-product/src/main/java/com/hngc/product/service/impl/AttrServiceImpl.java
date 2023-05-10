@@ -15,6 +15,7 @@ import com.hngc.product.service.AttrService;
 import com.hngc.product.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
@@ -46,7 +47,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
 
         LambdaQueryWrapper<Attr> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper
-                .eq(catelogId != null, Attr::getCatelogId, catelogId)
+                .eq(catelogId != null && catelogId != 0, Attr::getCatelogId, catelogId)
                 .like(StringUtils.hasText(pageParams.getKey()), Attr::getAttrName, pageParams.getKey());
 
         //分页查询所有商品属性
@@ -109,13 +110,15 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
     }
 
     @Override
+    @Transactional
     public boolean syncSave(Attr attr) {
         //查询分组信息
         AttrGroup attrGroup = attrGroupService.getById(attr.getAttrGroupId());
-        if (attrGroup != null) {
-            attr.setGroupName(attrGroup.getAttrGroupName());
-        }
-        return this.save(attr);
+        attr.setGroupName(attrGroup.getAttrGroupName());
+        //保存属性信息
+        this.save(attr);
+        //保存属性分组关联表信息
+        return attrAttrgroupRelationService.save(new AttrAttrgroupRelation(attr.getAttrId(), attrGroup.getAttrGroupId()));
     }
 
     @Override
@@ -124,12 +127,10 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
         if (attr == null) {
             return null;
         }
-        AttrGroup attrGroup = attrGroupService.getOne(new LambdaQueryWrapper<AttrGroup>()
-                .eq(attr.getGroupName() != null, AttrGroup::getAttrGroupName, attr.getGroupName())
-                .eq(attr.getCatelogId() != null, AttrGroup::getCatelogId, attr.getCatelogId())
-        );
+        AttrAttrgroupRelation attrAttrgroupRelation = attrAttrgroupRelationService.getOne(new LambdaQueryWrapper<AttrAttrgroupRelation>()
+                .eq(attrId != null, AttrAttrgroupRelation::getAttrId, attrId));
         //设置分组id
-        attr.setAttrGroupId(attrGroup.getAttrGroupId());
+        attr.setAttrGroupId(attrAttrgroupRelation.getAttrGroupId());
         //设置完整路径
         LinkedList<Long> linkedList = new LinkedList<>();
         categoryService.findParentPath(attr.getCatelogId(), linkedList);

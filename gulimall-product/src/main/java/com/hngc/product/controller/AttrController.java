@@ -61,7 +61,7 @@ public class AttrController {
      * @param attrId
      * @return
      */
-    @PostMapping("info/{attrId}")
+    @GetMapping("info/{attrId}")
     public Result info(@PathVariable Long attrId) {
         return Result.success().put("attr", attrService.info(attrId));
     }
