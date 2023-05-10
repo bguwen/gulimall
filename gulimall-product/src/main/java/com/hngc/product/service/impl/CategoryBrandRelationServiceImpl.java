@@ -1,5 +1,6 @@
 package com.hngc.product.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hngc.product.entity.CategoryBrandRelation;
 import com.hngc.product.mapper.CategoryBrandRelationMapper;
@@ -8,6 +9,10 @@ import com.hngc.product.service.CategoryBrandRelationService;
 import com.hngc.product.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -26,12 +31,17 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
     @Autowired
     private CategoryService categoryService;
     @Override
-    public boolean saveBrandRelation(CategoryBrandRelation categoryBrandRelation) {
-        //查询设置品牌名
-        categoryBrandRelation.setBrandName(brandService.getById(categoryBrandRelation.getBrandId()).getName());
-        //查询设置分类名称
-        categoryBrandRelation.setCatelogName(categoryService.getById(categoryBrandRelation.getCatelogId()).getName());
+    public boolean syncUpdate(Long brandId, String brandName) {
+        return this.update(new LambdaQueryWrapper<CategoryBrandRelation>().eq(StringUtils.hasText(brandName), CategoryBrandRelation::getBrandName, brandName));
+    }
 
-        return this.save(categoryBrandRelation);
+    @Override
+    public List<CategoryBrandRelation> select(Long brandId) {
+        List<CategoryBrandRelation> list = this.list(new LambdaQueryWrapper<CategoryBrandRelation>().eq(brandId != null, CategoryBrandRelation::getBrandId, brandId));
+        return list.stream().map(item -> {
+            item.setCatelogName(categoryService.getById(item.getCatelogId()).getName());
+            item.setBrandName(brandService.getById(brandId).getName());
+            return item;
+        }).collect(Collectors.toList());
     }
 }

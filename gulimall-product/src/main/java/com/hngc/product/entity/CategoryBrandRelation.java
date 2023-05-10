@@ -33,8 +33,10 @@ public class CategoryBrandRelation implements Serializable {
     @ApiModelProperty("分类id")
     private Long catelogId;
 
+    @TableField(exist = false)
     private String brandName;
 
+    @TableField(exist = false)
     private String catelogName;
 
     @ApiModelProperty("逻辑删除，0 - 未删除；-1 - 已删除")

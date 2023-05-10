@@ -13,11 +13,4 @@ import com.hngc.product.entity.CategoryBrandRelation;
  */
 public interface CategoryBrandRelationService extends IService<CategoryBrandRelation> {
 
-    /**
-     * 新增品牌与分类关联关系
-     *
-     * @param categoryBrandRelation
-     * @return
-     */
-    boolean saveBrandRelation(CategoryBrandRelation categoryBrandRelation);
 }

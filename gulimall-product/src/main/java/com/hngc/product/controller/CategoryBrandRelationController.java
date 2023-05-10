@@ -1,6 +1,5 @@
 package com.hngc.product.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.common.utils.Result;
 import com.hngc.product.entity.CategoryBrandRelation;
 import com.hngc.product.service.CategoryBrandRelationService;
@@ -32,8 +31,7 @@ public class CategoryBrandRelationController {
      */
     @GetMapping("catelog/list")
     public Result list(@RequestParam Long brandId) {
-        return Result.success(categoryBrandRelationService.list(new LambdaQueryWrapper<CategoryBrandRelation>()
-                .eq(brandId != null, CategoryBrandRelation::getBrandId, brandId)));
+        return Result.success(categoryBrandRelationService.select(brandId));
     }
 
     /**
@@ -44,7 +42,7 @@ public class CategoryBrandRelationController {
      */
     @PostMapping("save")
     public Result save(@RequestBody CategoryBrandRelation categoryBrandRelation) {
-        return categoryBrandRelationService.saveBrandRelation(categoryBrandRelation) ? Result.success() : Result.error();
+        return categoryBrandRelationService.save(categoryBrandRelation) ? Result.success() : Result.error();
     }
 
 }
