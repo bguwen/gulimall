@@ -1,8 +1,6 @@
 package com.hngc.product.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -38,4 +36,9 @@ public class CategoryBrandRelation implements Serializable {
     private String brandName;
 
     private String catelogName;
+
+    @ApiModelProperty("逻辑删除，0 - 未删除；-1 - 已删除")
+    @TableLogic(value = "0", delval = "1")
+    @TableField(value = "is_delete", fill = FieldFill.INSERT)
+    private Integer isDelete;
 }
