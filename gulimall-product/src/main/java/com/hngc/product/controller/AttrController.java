@@ -66,4 +66,14 @@ public class AttrController {
         return Result.success().put("attr", attrService.info(attrId));
     }
 
+    /**
+     * 修改属性【规格参数，销售属性】
+     *
+     * @param attr
+     * @return
+     */
+    @PostMapping("update")
+    public Result update(@RequestBody Attr attr) {
+        return attrService.syncUpdate(attr) ? Result.success() : Result.error();
+    }
 }

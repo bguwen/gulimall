@@ -10,8 +10,8 @@ spring:
   cloud:
 #阿里对象存储配置
     alicloud:
-      access-key: LTAI5tE6hf6WZGr7jSSUTER7
-      secret-key: Rvwfiq03l9VSwMLJX5XeNPGViDcpbi
+      access-key: ENC(XhNbMgeEkEuZHWMDkgyNwoHQDMEh55J2XdoxMx4ZhLW4EVbFvQVlDQ==)
+      secret-key: ENC(ZtPMDu59je2MNeU0K8XbgwHyy/oSoLs+AWm9CVWWhMCvmMxg2g3+1A==)
       oss:
-        endpoint: oss-cn-shanghai.aliyuncs.com
-        bucket: guli-college2022
+        endpoint: ENC(raEHM1sP+Vs+GQ/0qxIeFn/JelOZvmk74YkFOdx8cVpxg8sOPZLvlg==)
+        bucket: ENC(W+Ka/rRDyC+Kwwv1fe7uHpRKIzZvUjcZlQeF9IuMopc=)

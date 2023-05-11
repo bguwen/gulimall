@@ -14,6 +14,12 @@
     <description>公共模块</description>
 
     <dependencies>
+        <!--        裸露密码加密-->
+        <dependency>
+            <groupId>com.github.ulisesbocchio</groupId>
+            <artifactId>jasypt-spring-boot-starter</artifactId>
+            <version>3.0.5</version>
+        </dependency>
         <!--         Spring Boot 集成 knife4j swagger -->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>

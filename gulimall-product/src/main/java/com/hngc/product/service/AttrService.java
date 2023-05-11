@@ -24,6 +24,7 @@ public interface AttrService extends IService<Attr> {
      * @return
      */
     Map<String, Object> queryPage(PageParams pageParams, Long catelogId);
+
     /**
      * 根据树子节点id递归查询父节点名称
      *
@@ -35,6 +36,7 @@ public interface AttrService extends IService<Attr> {
 
     /**
      * 保存属性信息，同步保存分组信息
+     *
      * @param attr
      * @return
      */
@@ -47,4 +49,12 @@ public interface AttrService extends IService<Attr> {
      * @return
      */
     Attr info(Long attrId);
+
+    /**
+     * 修改属性【规格参数，销售属性】
+     *
+     * @param attr
+     * @return
+     */
+    boolean syncUpdate(Attr attr);
 }

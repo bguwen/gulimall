@@ -28,7 +28,7 @@ public class GlobalException {
      */
     @ExceptionHandler(value = {HttpMessageNotReadableException.class})
     public Result HttpMessageNotReadableException(HttpMessageNotReadableException e) {
-        log.error(e.getMessage());
+        log.error(e.getClass()+e.getMessage());
         return Result.error("请求参数非法！");
     }
 
@@ -40,7 +40,7 @@ public class GlobalException {
      */
     @ExceptionHandler(value = {MethodArgumentNotValidException.class})
     public Result methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
-        log.error(e.getMessage());
+        log.error(e.getClass()+e.getMessage()+e.getAllErrors());
 
         return Result.error(e.getBindingResult().getFieldErrors().stream().collect(Collectors.toMap(FieldError::getField,FieldError::getDefaultMessage)));
     }
@@ -53,7 +53,7 @@ public class GlobalException {
      */
     @ExceptionHandler(value = {Exception.class})
     public Result unKnowException(Exception e) {
-        log.error(e.getMessage());
+        log.error(e.getClass()+e.getMessage());
         return Result.error("未知异常！");
     }
 }

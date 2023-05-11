@@ -138,4 +138,15 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
         return attr;
     }
 
+    @Transactional
+    @Override
+    public boolean syncUpdate(Attr attr) {
+        this.updateById(attr);
+        AttrAttrgroupRelation attrAttrgroupRelation = new AttrAttrgroupRelation();
+        attrAttrgroupRelation.setAttrGroupId(attr.getAttrGroupId());
+        attrAttrgroupRelationService.update(attrAttrgroupRelation, new LambdaQueryWrapper<AttrAttrgroupRelation>()
+                .eq(AttrAttrgroupRelation::getAttrId, attr.getAttrId()));
+        return true;
+    }
+
 }
