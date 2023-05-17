@@ -25,7 +25,7 @@ public class AttrController {
     private AttrService attrService;
 
     /**
-     * 分页获取分类规格参数
+     * 分页获取分类 商品属性 规格参数
      * 请求参数：
      * {
      * page: 1,//当前页码
@@ -39,9 +39,9 @@ public class AttrController {
      * @param catelogId
      * @return
      */
-    @PostMapping("page/{catelogId}")
-    public Result list(@RequestBody PageParams pageParams, @PathVariable Long catelogId) {
-        return Result.success().put("page", attrService.queryPage(pageParams, catelogId));
+    @PostMapping("{attrType}/page/{catelogId}")
+    public Result list(@RequestBody PageParams pageParams, @PathVariable Long catelogId, @PathVariable Integer attrType) {
+        return Result.success().put("page", attrService.queryPage(pageParams, catelogId,attrType));
     }
 
     /**

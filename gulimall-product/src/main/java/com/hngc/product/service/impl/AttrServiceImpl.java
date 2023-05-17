@@ -3,6 +3,7 @@ package com.hngc.product.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.common.constant.ProductConstant;
 import com.common.utils.PageParams;
 import com.hngc.product.entity.Attr;
 import com.hngc.product.entity.AttrAttrgroupRelation;
@@ -42,12 +43,14 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
     private AttrAttrgroupRelationService attrAttrgroupRelationService;
 
     @Override
-    public Map<String, Object> queryPage(PageParams pageParams, Long catelogId) {
+    public Map<String, Object> queryPage(PageParams pageParams, Long catelogId, Integer attrType) {
         Page<Attr> page = new Page<>(pageParams.getPage(), pageParams.getLimit());
 
         LambdaQueryWrapper<Attr> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper
                 .eq(catelogId != null && catelogId != 0, Attr::getCatelogId, catelogId)
+                //基本属性
+                .eq(attrType != null, Attr::getAttrType, attrType)
                 .like(StringUtils.hasText(pageParams.getKey()), Attr::getAttrName, pageParams.getKey());
 
         //分页查询所有商品属性
@@ -58,11 +61,13 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
             /*
               根据商品属性id在中间表查询分组id,再根据分组id查询分组信息
              */
-            AttrGroup attrGroup = attrGroupService.getById(
-                    attrAttrgroupRelationService.getOne(
-                            new LambdaQueryWrapper<AttrAttrgroupRelation>()
-                                    .eq(AttrAttrgroupRelation::getAttrId, item.getAttrId())).getAttrGroupId());
-            item.setGroupName(attrGroup.getAttrGroupName());
+            if (attrType != null && attrType.equals(ProductConstant.ATTR_TYPE_BASE.getCode())) {
+                AttrGroup attrGroup = attrGroupService.getById(
+                        attrAttrgroupRelationService.getOne(
+                                new LambdaQueryWrapper<AttrAttrgroupRelation>()
+                                        .eq(AttrAttrgroupRelation::getAttrId, item.getAttrId())).getAttrGroupId());
+                item.setGroupName(attrGroup.getAttrGroupName());
+            }
             return item;
         }).collect(Collectors.toList());
 
@@ -112,13 +117,16 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
     @Override
     @Transactional
     public boolean syncSave(Attr attr) {
-        //查询分组信息
-        AttrGroup attrGroup = attrGroupService.getById(attr.getAttrGroupId());
-        attr.setGroupName(attrGroup.getAttrGroupName());
         //保存属性信息
         this.save(attr);
-        //保存属性分组关联表信息
-        return attrAttrgroupRelationService.save(new AttrAttrgroupRelation(attr.getAttrId(), attrGroup.getAttrGroupId()));
+        //查询分组信息
+        if (Objects.equals(attr.getAttrType(), ProductConstant.ATTR_TYPE_BASE.getCode())) {
+            AttrGroup attrGroup = attrGroupService.getById(attr.getAttrGroupId());
+            attr.setGroupName(attrGroup.getAttrGroupName());
+            //保存属性分组关联表信息
+            attrAttrgroupRelationService.save(new AttrAttrgroupRelation(attr.getAttrId(), attrGroup.getAttrGroupId()));
+        }
+        return true;
     }
 
     @Override
@@ -130,7 +138,9 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
         AttrAttrgroupRelation attrAttrgroupRelation = attrAttrgroupRelationService.getOne(new LambdaQueryWrapper<AttrAttrgroupRelation>()
                 .eq(attrId != null, AttrAttrgroupRelation::getAttrId, attrId));
         //设置分组id
-        attr.setAttrGroupId(attrAttrgroupRelation.getAttrGroupId());
+        if (attrAttrgroupRelation != null) {
+            attr.setAttrGroupId(attrAttrgroupRelation.getAttrGroupId());
+        }
         //设置完整路径
         LinkedList<Long> linkedList = new LinkedList<>();
         categoryService.findParentPath(attr.getCatelogId(), linkedList);
@@ -142,10 +152,12 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
     @Override
     public boolean syncUpdate(Attr attr) {
         this.updateById(attr);
-        AttrAttrgroupRelation attrAttrgroupRelation = new AttrAttrgroupRelation();
-        attrAttrgroupRelation.setAttrGroupId(attr.getAttrGroupId());
-        attrAttrgroupRelationService.update(attrAttrgroupRelation, new LambdaQueryWrapper<AttrAttrgroupRelation>()
-                .eq(AttrAttrgroupRelation::getAttrId, attr.getAttrId()));
+        if (Objects.equals(attr.getAttrType(), ProductConstant.ATTR_TYPE_BASE.getCode())) {
+            AttrAttrgroupRelation attrAttrgroupRelation = new AttrAttrgroupRelation();
+            attrAttrgroupRelation.setAttrGroupId(attr.getAttrGroupId());
+            attrAttrgroupRelationService.update(attrAttrgroupRelation, new LambdaQueryWrapper<AttrAttrgroupRelation>()
+                    .eq(AttrAttrgroupRelation::getAttrId, attr.getAttrId()));
+        }
         return true;
     }
 

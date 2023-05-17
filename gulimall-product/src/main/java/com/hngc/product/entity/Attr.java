@@ -53,7 +53,7 @@ public class Attr implements Serializable {
     private String valueSelect;
 
     @ApiModelProperty("属性类型[0-销售属性，1-基本属性，2-既是销售属性又是基本属性]")
-    private Byte attrType;
+    private Integer attrType;
 
     @ApiModelProperty("启用状态[0 - 禁用，1 - 启用]")
     private Long enable;

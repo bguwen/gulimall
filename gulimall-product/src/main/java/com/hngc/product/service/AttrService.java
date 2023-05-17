@@ -17,13 +17,14 @@ import java.util.Map;
 public interface AttrService extends IService<Attr> {
 
     /**
-     * 分页获取分类规格参数
+     * 分页获取分类 商品属性 规格参数
      *
      * @param pageParams
      * @param catelogId
+     * @param attrType
      * @return
      */
-    Map<String, Object> queryPage(PageParams pageParams, Long catelogId);
+    Map<String, Object> queryPage(PageParams pageParams, Long catelogId, Integer attrType);
 
     /**
      * 根据树子节点id递归查询父节点名称
