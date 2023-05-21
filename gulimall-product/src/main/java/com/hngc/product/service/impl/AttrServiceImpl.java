@@ -62,11 +62,15 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
               根据商品属性id在中间表查询分组id,再根据分组id查询分组信息
              */
             if (attrType != null && attrType.equals(ProductConstant.ATTR_TYPE_BASE.getCode())) {
-                AttrGroup attrGroup = attrGroupService.getById(
-                        attrAttrgroupRelationService.getOne(
-                                new LambdaQueryWrapper<AttrAttrgroupRelation>()
-                                        .eq(AttrAttrgroupRelation::getAttrId, item.getAttrId())).getAttrGroupId());
-                item.setGroupName(attrGroup.getAttrGroupName());
+                AttrAttrgroupRelation attrAttrgroupRelation = attrAttrgroupRelationService.getOne(
+                        new LambdaQueryWrapper<AttrAttrgroupRelation>()
+                                .eq(AttrAttrgroupRelation::getAttrId, item.getAttrId()));
+                //判断是否已经关联分组
+                if (attrAttrgroupRelation != null) {
+                    AttrGroup attrGroup = attrGroupService.getById(attrAttrgroupRelation.getAttrGroupId());
+                    item.setGroupName(attrGroup.getAttrGroupName());
+                }
+
             }
             return item;
         }).collect(Collectors.toList());
@@ -120,7 +124,7 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
         //保存属性信息
         this.save(attr);
         //查询分组信息
-        if (Objects.equals(attr.getAttrType(), ProductConstant.ATTR_TYPE_BASE.getCode())) {
+        if (Objects.equals(attr.getAttrType(), ProductConstant.ATTR_TYPE_BASE.getCode()) && (attr.getAttrGroupId() != null)) {
             AttrGroup attrGroup = attrGroupService.getById(attr.getAttrGroupId());
             attr.setGroupName(attrGroup.getAttrGroupName());
             //保存属性分组关联表信息

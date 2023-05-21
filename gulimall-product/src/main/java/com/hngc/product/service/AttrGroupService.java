@@ -38,8 +38,17 @@ public interface AttrGroupService extends IService<AttrGroup> {
     /**
      * 根据属性分组id 获取属性分组的关联的所有属性
      *
-     * @param attrgroupId
+     * @param attrGroupId
      * @return
      */
-    List<Attr> getAttrList(String attrgroupId);
+    List<Attr> getAttrList(String attrGroupId);
+
+    /**
+     * 根据属性分组id 获取属性分组里面还没有关联的本分类里面的其他基本属性，方便添加新的关联
+     *
+     * @param attrGroupId
+     * @param pageParams
+     * @return
+     */
+    Map<String, Object> getNoRelation(String attrGroupId, PageParams pageParams);
 }

@@ -99,11 +99,59 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupMapper, AttrGroup
     }
 
     @Override
-    public List<Attr> getAttrList(String attrgroupId) {
+    public List<Attr> getAttrList(String attrGroupId) {
         return attrAttrgroupRelationService.list(new LambdaQueryWrapper<AttrAttrgroupRelation>()
-                        .eq(StringUtils.hasLength(attrgroupId), AttrAttrgroupRelation::getAttrGroupId, attrgroupId)
+                        .eq(StringUtils.hasLength(attrGroupId), AttrAttrgroupRelation::getAttrGroupId, attrGroupId)
                         .select(AttrAttrgroupRelation::getAttrId))
                 .stream().map(item -> attrMapper.selectById(item.getAttrId())).collect(Collectors.toList());
+    }
+
+    @Override
+    public Map<String, Object> getNoRelation(String attrGroupId, PageParams pageParams) {
+        //获取当前分组所属分类id
+        Long catelogId = this.getById(attrGroupId).getCatelogId();
+        //获取分类下其它分组id
+        List<Long> attrGroupIds = this.list(new LambdaQueryWrapper<AttrGroup>()
+                        .eq(AttrGroup::getCatelogId, catelogId)
+//                        //不含当前分组
+//                        .ne(AttrGroup::getAttrGroupId, attrGroupId)
+                        .select(AttrGroup::getAttrGroupId))
+                .stream().map(AttrGroup::getAttrGroupId).collect(Collectors.toList());
+        //其它分组关联的所有属性id
+        List<Long> attrIds = attrAttrgroupRelationService.list(new LambdaQueryWrapper<AttrAttrgroupRelation>()
+                        .in(AttrAttrgroupRelation::getAttrGroupId, attrGroupIds))
+                .stream().map(AttrAttrgroupRelation::getAttrId).collect(Collectors.toList());
+        //从当前分类所有属性中移除这些属性  查询并封装数据
+        Page<Attr> page = new Page<>(pageParams.getPage(), pageParams.getLimit());
+        LambdaQueryWrapper<Attr> lambdaQueryWrapper = new LambdaQueryWrapper<Attr>()
+                .eq(Attr::getCatelogId, catelogId).notIn(Attr::getAttrId, attrIds)
+                .orderBy(StringUtils.hasLength(pageParams.getOrder()), "asc".equalsIgnoreCase(pageParams.getOrder()), Attr::getAttrId)
+                .like(StringUtils.hasLength(pageParams.getKey()), Attr::getAttrName, pageParams.getKey())
+                .or()
+                .like(StringUtils.hasLength(pageParams.getKey()), Attr::getAttrId, pageParams.getKey());
+        Page<Attr> pageResult = attrMapper.selectPage(page, lambdaQueryWrapper);
+        Map<String, Object> map = new HashMap<>();
+            /*
+              总记录数
+             */
+        map.put("totalCount", pageResult.getTotal());
+            /*
+             每页大小
+             */
+        map.put("pageSize", pageResult.getSize());
+            /*
+             总页码
+             */
+        map.put("totalPage", pageResult.getPages());
+        /*
+         *当前页码
+         */
+        map.put("currPage", pageResult.getCurrent());
+        /*
+         *当前页所有数据
+         */
+        map.put("list", pageResult.getRecords());
+        return map;
     }
 
 }

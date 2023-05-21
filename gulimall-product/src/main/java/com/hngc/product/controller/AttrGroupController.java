@@ -98,11 +98,22 @@ public class AttrGroupController {
     /**
      * 根据属性分组id 获取属性分组的关联的所有属性
      *
-     * @param attrgroupId
+     * @param attrGroupId
      * @return
      */
-    @GetMapping("{attrgroupId}/attr/relation")
-    public Result attrRelation(@PathVariable String attrgroupId) {
-        return Result.success().put("data", attrGroupService.getAttrList(attrgroupId));
+    @GetMapping("{attrGroupId}/attr/relation")
+    public Result attrRelation(@PathVariable String attrGroupId) {
+        return Result.success().put("data", attrGroupService.getAttrList(attrGroupId));
+    }
+
+    /**
+     * 根据属性分组id 获取属性分组里面还没有关联的本分类里面的其他基本属性，方便添加新的关联
+     *
+     * @param attrGroupId
+     * @return
+     */
+    @PostMapping("{attrGroupId}/noAttr/relation")
+    public Result attrNoRelation(@RequestBody PageParams pageParams, @PathVariable String attrGroupId) {
+        return Result.success().put("page", attrGroupService.getNoRelation(attrGroupId, pageParams));
     }
 }
