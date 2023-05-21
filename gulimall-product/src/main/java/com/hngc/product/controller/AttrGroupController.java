@@ -94,4 +94,15 @@ public class AttrGroupController {
     public Result delete(@RequestBody List<Long> attrGroupIds) {
         return attrGroupService.removeBatchByIds(attrGroupIds) ? Result.success() : Result.error();
     }
+
+    /**
+     * 根据属性分组id 获取属性分组的关联的所有属性
+     *
+     * @param attrgroupId
+     * @return
+     */
+    @GetMapping("{attrgroupId}/attr/relation")
+    public Result attrRelation(@PathVariable String attrgroupId) {
+        return Result.success().put("data", attrGroupService.getAttrList(attrgroupId));
+    }
 }

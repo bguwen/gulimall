@@ -5,8 +5,12 @@ import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.common.utils.PageParams;
+import com.hngc.product.entity.Attr;
+import com.hngc.product.entity.AttrAttrgroupRelation;
 import com.hngc.product.entity.AttrGroup;
 import com.hngc.product.mapper.AttrGroupMapper;
+import com.hngc.product.mapper.AttrMapper;
+import com.hngc.product.service.AttrAttrgroupRelationService;
 import com.hngc.product.service.AttrGroupService;
 import com.hngc.product.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -28,6 +33,10 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupMapper, AttrGroup
 
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private AttrAttrgroupRelationService attrAttrgroupRelationService;
+    @Autowired
+    private AttrMapper attrMapper;
 
     @Override
     public Map<String, Object> queryPage(PageParams pageParams, Long catId) {
@@ -87,6 +96,14 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupMapper, AttrGroup
             attrGroup.setCatelogPath(categoryService.findParentPath(attrGroup.getCatelogId(), arrayList));
         }
         return attrGroup;
+    }
+
+    @Override
+    public List<Attr> getAttrList(String attrgroupId) {
+        return attrAttrgroupRelationService.list(new LambdaQueryWrapper<AttrAttrgroupRelation>()
+                        .eq(StringUtils.hasLength(attrgroupId), AttrAttrgroupRelation::getAttrGroupId, attrgroupId)
+                        .select(AttrAttrgroupRelation::getAttrId))
+                .stream().map(item -> attrMapper.selectById(item.getAttrId())).collect(Collectors.toList());
     }
 
 }

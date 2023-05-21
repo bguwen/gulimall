@@ -2,8 +2,10 @@ package com.hngc.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.common.utils.PageParams;
+import com.hngc.product.entity.Attr;
 import com.hngc.product.entity.AttrGroup;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,4 +34,12 @@ public interface AttrGroupService extends IService<AttrGroup> {
      * @return
      */
     AttrGroup getInfo(Long attrGroupId);
+
+    /**
+     * 根据属性分组id 获取属性分组的关联的所有属性
+     *
+     * @param attrgroupId
+     * @return
+     */
+    List<Attr> getAttrList(String attrgroupId);
 }
