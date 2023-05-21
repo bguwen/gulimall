@@ -3,6 +3,8 @@ package com.hngc.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hngc.product.entity.AttrAttrgroupRelation;
 
+import java.util.List;
+
 /**
  * <p>
  * 属性&属性分组关联 服务类
@@ -13,4 +15,11 @@ import com.hngc.product.entity.AttrAttrgroupRelation;
  */
 public interface AttrAttrgroupRelationService extends IService<AttrAttrgroupRelation> {
 
+    /**
+     * 批量删除属性与分组关联关系
+     *
+     * @param attrgroupRelationList
+     * @return
+     */
+    boolean deleteBatch(List<AttrAttrgroupRelation> attrgroupRelationList);
 }
