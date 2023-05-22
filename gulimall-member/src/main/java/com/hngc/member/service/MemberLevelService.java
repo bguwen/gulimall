@@ -1,6 +1,8 @@
 package com.hngc.member.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.common.utils.PageParams;
+import com.common.utils.PageResult;
 import com.hngc.member.entity.MemberLevel;
 
 /**
@@ -13,4 +15,11 @@ import com.hngc.member.entity.MemberLevel;
  */
 public interface MemberLevelService extends IService<MemberLevel> {
 
+    /**
+     * 分页获取会员等级
+     *
+     * @param pageParams
+     * @return
+     */
+    PageResult<MemberLevel> levelPage(PageParams pageParams);
 }

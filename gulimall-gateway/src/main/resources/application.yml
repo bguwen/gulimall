@@ -4,6 +4,12 @@ spring:
   cloud:
     gateway:
       routes:
+        - id: member_route
+          uri: lb://gulimall-member
+          predicates:
+            - Path=/api/member/**
+          filters:
+            - RewritePath=/api/member/(?<segment>.*),/$\{segment}
         - id: product_route
           uri: lb://gulimall-product
           predicates:
