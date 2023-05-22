@@ -27,14 +27,14 @@ public class AttrAttrgroupRelationController {
     private AttrAttrgroupRelationService attrAttrgroupRelationService;
 
     /**
-     * 添加属性与分组关联关系
+     * 批量添加属性与分组关联关系
      *
-     * @param attrAttrgroupRelation
+     * @param attrAttrgroupRelationList
      * @return
      */
     @PostMapping("save")
-    public Result save(@Validated @RequestBody AttrAttrgroupRelation attrAttrgroupRelation) {
-        return attrAttrgroupRelationService.save(attrAttrgroupRelation) ? Result.success() : Result.error();
+    public Result save(@Validated @RequestBody List<AttrAttrgroupRelation> attrAttrgroupRelationList) {
+        return attrAttrgroupRelationService.saveBatch(attrAttrgroupRelationList) ? Result.success() : Result.error();
     }
 
     /**
