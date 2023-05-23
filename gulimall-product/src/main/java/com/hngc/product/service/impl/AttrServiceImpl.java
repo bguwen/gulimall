@@ -165,4 +165,12 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, Attr> implements At
         return true;
     }
 
+    @Transactional
+    @Override
+    public boolean syncDelete(List<Attr> ids) {
+        return attrAttrgroupRelationService.remove(new LambdaQueryWrapper<AttrAttrgroupRelation>()
+                .in(ids != null, AttrAttrgroupRelation::getAttrId, ids))
+                && this.removeBatchByIds(ids);
+    }
+
 }

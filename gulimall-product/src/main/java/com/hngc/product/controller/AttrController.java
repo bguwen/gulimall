@@ -8,6 +8,8 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * <p>
  * 商品属性 前端控制器
@@ -41,7 +43,7 @@ public class AttrController {
      */
     @PostMapping("{attrType}/page/{catelogId}")
     public Result list(@RequestBody PageParams pageParams, @PathVariable Long catelogId, @PathVariable Integer attrType) {
-        return Result.success().put("page", attrService.queryPage(pageParams, catelogId,attrType));
+        return Result.success().put("page", attrService.queryPage(pageParams, catelogId, attrType));
     }
 
     /**
@@ -75,5 +77,16 @@ public class AttrController {
     @PostMapping("update")
     public Result update(@RequestBody Attr attr) {
         return attrService.syncUpdate(attr) ? Result.success() : Result.error();
+    }
+
+    /**
+     * 删除属性【规格参数，销售属性】,同步删除属性分组关联的关联关系
+     *
+     * @param ids
+     * @return
+     */
+    @DeleteMapping("delete")
+    public Result delete(@RequestBody List<Attr> ids) {
+        return attrService.syncDelete(ids) ? Result.success() : Result.error();
     }
 }

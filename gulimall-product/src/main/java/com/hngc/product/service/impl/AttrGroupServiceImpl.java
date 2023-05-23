@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.common.constant.ProductConstant;
 import com.common.utils.PageParams;
 import com.hngc.product.entity.Attr;
 import com.hngc.product.entity.AttrAttrgroupRelation;
@@ -13,6 +14,8 @@ import com.hngc.product.mapper.AttrMapper;
 import com.hngc.product.service.AttrAttrgroupRelationService;
 import com.hngc.product.service.AttrGroupService;
 import com.hngc.product.service.CategoryService;
+import com.hngc.product.vo.AttrGroupWithAttrVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -152,6 +155,66 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupMapper, AttrGroup
          */
         map.put("list", pageResult.getRecords());
         return map;
+    }
+
+    /**
+     * 根据分类id获取分类下所有分组
+     * 方法一: (查出所有数据封装 不循环查数据库)
+     * 方法二: (循环查数据库)
+     *
+     * @param categoryId
+     * @param circulation 是否循环查数据库
+     * @return
+     */
+    @Override
+    public List<AttrGroupWithAttrVo> attrGroupWithAttrsByCategoryId(Long categoryId, boolean circulation) {
+        if (circulation) {
+            //方法一:
+         /*
+         根据分类id查出分组id
+         根据分组id查出属性id
+         根据属性id批量查询属性详细信息
+         */
+            return this.list(new LambdaQueryWrapper<AttrGroup>().eq(AttrGroup::getCatelogId, categoryId)).stream()
+                    .map(item -> {
+                        AttrGroupWithAttrVo attrGroupWithAttrVo = new AttrGroupWithAttrVo();
+                        BeanUtils.copyProperties(item, attrGroupWithAttrVo);
+                        List<Attr> attrs = attrMapper.selectList(
+                                new LambdaQueryWrapper<Attr>()
+                                        .in(true, Attr::getAttrId,
+                                                attrAttrgroupRelationService.list(new LambdaQueryWrapper<AttrAttrgroupRelation>()
+                                                                .eq(AttrAttrgroupRelation::getAttrGroupId, item.getAttrGroupId())).stream()
+                                                        .map(AttrAttrgroupRelation::getAttrId)
+                                                        .collect(Collectors.toList()))
+                                        //只包含基本属性，不包含销售属性
+                                        .eq(Attr::getAttrType, ProductConstant.ATTR_TYPE_BASE.getCode())
+                        );
+                        attrGroupWithAttrVo.setAttrs(attrs);
+                        return attrGroupWithAttrVo;
+                    }).collect(Collectors.toList());
+        } else {
+            //方法二
+            //查出 属性分组关联表 所有数据
+            List<AttrAttrgroupRelation> attrAttrgroupRelationList = attrAttrgroupRelationService.list();
+            //根据分类id查出分组信息
+            List<AttrGroup> attrGroupList = this.list(new LambdaQueryWrapper<AttrGroup>().eq(AttrGroup::getCatelogId, categoryId));
+            return attrGroupList.stream().map(item -> {
+                AttrGroupWithAttrVo attrGroupWithAttrVo = new AttrGroupWithAttrVo();
+                BeanUtils.copyProperties(item, attrGroupWithAttrVo);
+                List<Long> attrIds = attrAttrgroupRelationList.stream()
+                        .filter(x -> Objects.equals(item.getAttrGroupId(), x.getAttrGroupId()))
+                        .map(AttrAttrgroupRelation::getAttrId)
+                        .collect(Collectors.toList());
+                List<Attr> attrs = attrMapper.selectList(new LambdaQueryWrapper<Attr>()
+                        .in(Attr::getAttrId, attrIds)
+                        //只包含基本属性，不包含销售属性
+                        .eq(Attr::getAttrType, ProductConstant.ATTR_TYPE_BASE.getCode())
+                );
+                attrGroupWithAttrVo.setAttrs(attrs);
+                return attrGroupWithAttrVo;
+            }).collect(Collectors.toList());
+        }
+
     }
 
 }

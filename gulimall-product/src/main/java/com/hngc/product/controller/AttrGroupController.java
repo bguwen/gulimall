@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -115,5 +116,16 @@ public class AttrGroupController {
     @PostMapping("{attrGroupId}/noAttr/relation")
     public Result attrNoRelation(@RequestBody PageParams pageParams, @PathVariable String attrGroupId) {
         return Result.success().put("page", attrGroupService.getNoRelation(attrGroupId, pageParams));
+    }
+
+    /**
+     * 根据分类id获取分类下所有分组
+     *
+     * @param categoryId
+     * @return
+     */
+    @GetMapping("{categoryId}/withAttr")
+    public Result withAttr(@NotNull @PathVariable Long categoryId) {
+        return Result.success(attrGroupService.attrGroupWithAttrsByCategoryId(categoryId, false));
     }
 }

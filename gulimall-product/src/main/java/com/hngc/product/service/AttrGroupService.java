@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.common.utils.PageParams;
 import com.hngc.product.entity.Attr;
 import com.hngc.product.entity.AttrGroup;
+import com.hngc.product.vo.AttrGroupWithAttrVo;
 
 import java.util.List;
 import java.util.Map;
@@ -51,4 +52,15 @@ public interface AttrGroupService extends IService<AttrGroup> {
      * @return
      */
     Map<String, Object> getNoRelation(String attrGroupId, PageParams pageParams);
+
+    /**
+     * 根据分类id获取分类下所有分组
+     * 方法一: (查出所有数据封装 不循环查数据库)
+     * 方法二: (循环查数据库)
+     *
+     * @param categoryId
+     * @param circulation 是否循环查数据库
+     * @return
+     */
+    List<AttrGroupWithAttrVo> attrGroupWithAttrsByCategoryId(Long categoryId, boolean circulation);
 }

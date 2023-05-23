@@ -3,7 +3,9 @@ package com.hngc.product.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.common.utils.PageParams;
 import com.hngc.product.entity.Attr;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -57,5 +59,15 @@ public interface AttrService extends IService<Attr> {
      * @param attr
      * @return
      */
+    @Transactional
     boolean syncUpdate(Attr attr);
+
+    /**
+     * 删除属性【规格参数，销售属性】,同步删除属性分组关联的关联关系
+     *
+     * @param ids
+     * @return
+     */
+    @Transactional
+    boolean syncDelete(List<Attr> ids);
 }
