@@ -2,14 +2,15 @@ package com.hngc.product.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hngc.product.entity.Brand;
 import com.hngc.product.entity.CategoryBrandRelation;
 import com.hngc.product.mapper.CategoryBrandRelationMapper;
 import com.hngc.product.service.BrandService;
 import com.hngc.product.service.CategoryBrandRelationService;
 import com.hngc.product.service.CategoryService;
+import com.hngc.product.vo.BrandVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,6 +39,15 @@ public class CategoryBrandRelationServiceImpl extends ServiceImpl<CategoryBrandR
             item.setCatelogName(categoryService.getById(item.getCatelogId()).getName());
             item.setBrandName(brandService.getById(brandId).getName());
             return item;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BrandVo> getBrandsList(Long categoryId) {
+        List<CategoryBrandRelation> categoryBrandRelation = this.list(new LambdaQueryWrapper<CategoryBrandRelation>().eq(categoryId != null, CategoryBrandRelation::getCatelogId, categoryId));
+        return categoryBrandRelation.stream().map(item -> {
+            Brand brand = brandService.getById(item.getBrandId());
+            return new BrandVo().setBrandId(brand.getBrandId()).setBrandName(brand.getName());
         }).collect(Collectors.toList());
     }
 }

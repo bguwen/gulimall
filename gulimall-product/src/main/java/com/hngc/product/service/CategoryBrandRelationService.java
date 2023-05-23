@@ -2,6 +2,7 @@ package com.hngc.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.hngc.product.entity.CategoryBrandRelation;
+import com.hngc.product.vo.BrandVo;
 
 import java.util.List;
 
@@ -22,4 +23,12 @@ public interface CategoryBrandRelationService extends IService<CategoryBrandRela
      * @return
      */
     List<CategoryBrandRelation> select(Long brandId);
+
+    /**
+     * 根据分类id获取分类关联的品牌
+     *
+     * @param categoryId
+     * @return
+     */
+    List<BrandVo> getBrandsList(Long categoryId);
 }

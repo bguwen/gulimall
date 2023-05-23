@@ -7,6 +7,8 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * <p>
  * 品牌分类关联 前端控制器
@@ -45,4 +47,14 @@ public class CategoryBrandRelationController {
         return categoryBrandRelationService.save(categoryBrandRelation) ? Result.success() : Result.error();
     }
 
+    /**
+     * 根据分类id获取分类关联的品牌
+     *
+     * @param categoryId
+     * @return
+     */
+    @GetMapping("brands/list")
+    public Result brandsList(@RequestParam @NotNull Long categoryId) {
+        return Result.success(categoryBrandRelationService.getBrandsList(categoryId));
+    }
 }

@@ -41,6 +41,6 @@ public class CategoryBrandRelation implements Serializable {
 
     @ApiModelProperty("逻辑删除，0 - 未删除；-1 - 已删除")
     @TableLogic(value = "0", delval = "1")
-    @TableField(value = "is_delete", fill = FieldFill.INSERT)
+    @TableField(value = "is_delete")
     private Integer isDelete;
 }
