@@ -1,6 +1,8 @@
 package com.hngc.member.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.common.utils.PageParams;
+import com.common.utils.PageResult;
 import com.hngc.member.entity.Member;
 
 /**
@@ -13,4 +15,11 @@ import com.hngc.member.entity.Member;
  */
 public interface MemberService extends IService<Member> {
 
+    /**
+     * 分页获取会员信息
+     *
+     * @param pageParams
+     * @return
+     */
+    PageResult<Member> pageMember(PageParams pageParams);
 }
