@@ -46,5 +46,5 @@ public class ProductAttrValue implements Serializable {
     private Integer attrSort;
 
     @ApiModelProperty("快速展示【是否展示在介绍上；0-否 1-是】")
-    private Byte quickShow;
+    private Integer quickShow;
 }

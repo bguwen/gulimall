@@ -1,8 +1,6 @@
 package com.hngc.product.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -39,7 +37,7 @@ public class SpuInfo implements Serializable {
     private String spuDescription;
 
     @ApiModelProperty("所属分类id")
-    private Long catalogId;
+    private Long catelogId;
 
     @ApiModelProperty("品牌id")
     private Long brandId;
@@ -48,8 +46,10 @@ public class SpuInfo implements Serializable {
 
     @ApiModelProperty("上架状态[0 - 下架，1 - 上架]")
     private Byte publishStatus;
-
+    @ApiModelProperty("创建时间")
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
-
+    @ApiModelProperty("修改时间")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 }

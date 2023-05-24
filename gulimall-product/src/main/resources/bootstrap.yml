@@ -10,3 +10,7 @@ spring:
         # 配置文件格式
         file-extension: yaml
         namespace: ae7fa632-46f0-4f61-9478-e92e521615c0
+        extension-configs: #扩展配置
+          - data-id: mybatis-plus-dev.yaml
+            group: dev
+            refresh: true

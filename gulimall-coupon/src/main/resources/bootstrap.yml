@@ -5,7 +5,12 @@ spring:
     active: dev
   cloud:
     nacos:
-      server-addr: localhost:8848 #配置中心地址
+      server-addr: localhost:8848 #服务中心地址
       config:
         file-extension: yaml
         namespace: ae7fa632-46f0-4f61-9478-e92e521615c0
+        server-addr: localhost:8848 #配置中心地址
+        extension-configs: #扩展配置
+          - data-id: mybatis-plus-dev.yaml
+            group: dev
+            refresh: true
