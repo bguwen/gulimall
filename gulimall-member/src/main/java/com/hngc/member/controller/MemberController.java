@@ -2,8 +2,8 @@ package com.hngc.member.controller;
 
 import com.common.utils.PageParams;
 import com.common.utils.Result;
+import com.hngc.feign.CouponFeignService;
 import com.hngc.member.entity.Member;
-import com.hngc.member.feign.CouponFeignService;
 import com.hngc.member.service.MemberService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;

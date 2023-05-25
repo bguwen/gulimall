@@ -40,6 +40,11 @@ public class CouponController {
         return Result.success().put("name", name).put("age", age);
     }
 
+    /**
+     * 获取用户优惠券信息
+     *
+     * @return
+     */
     @GetMapping("/member/list")
     public Result memberCoupons() {
         Coupon coupon = new Coupon();

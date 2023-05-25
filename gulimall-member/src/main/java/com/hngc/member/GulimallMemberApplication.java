@@ -9,7 +9,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 
 //开启远程调用
-@EnableFeignClients(basePackages = "com.hngc.member.feign")
+@EnableFeignClients(basePackages = "com.hngc.feign")
 @SpringBootApplication
 public class GulimallMemberApplication {
 

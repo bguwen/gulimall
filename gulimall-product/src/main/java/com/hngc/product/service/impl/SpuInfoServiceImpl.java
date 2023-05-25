@@ -1,10 +1,14 @@
 package com.hngc.product.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.common.constant.ProductConstant;
 import com.common.exception.MyException;
 import com.common.to.SkuReductionTo;
 import com.common.to.SpuBoundTo;
 import com.common.utils.HttpStatus;
+import com.common.utils.PageParams;
+import com.common.utils.PageResult;
 import com.common.utils.Result;
 import com.hngc.feign.CouponFeignService;
 import com.hngc.product.entity.*;
@@ -61,6 +65,8 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoMapper, SpuInfo> impl
     public boolean syncSaveSpuInfo(SpuSaveVo spuSaveVo) throws MyException {
         SpuInfo spuInfo = new SpuInfo();
         BeanUtils.copyProperties(spuSaveVo, spuInfo);
+        //上架状态
+        spuInfo.setPublishStatus(ProductConstant.SPU_NO_PUBLISH.getCode());
         //保存spu基本信息 pms_spu_info
         this.save(spuInfo);
         Long spuId = spuInfo.getId();
@@ -153,6 +159,24 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoMapper, SpuInfo> impl
             });
         }
         return true;
+    }
+
+    @Override
+    public PageResult<SpuInfo> pageInfo(PageParams pageParams, Long brandId, Integer status, Long catelogId) {
+        LambdaQueryWrapper<SpuInfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        if (StringUtils.hasLength(pageParams.getKey())) {
+            lambdaQueryWrapper
+                    .like(SpuInfo::getSpuName, pageParams.getKey())
+                    .or()
+                    .like(SpuInfo::getSpuDescription, pageParams.getKey())
+                    .or()
+                    .like(SpuInfo::getId, pageParams.getKey());
+        }
+        lambdaQueryWrapper
+                .eq(null != brandId && brandId != 0, SpuInfo::getBrandId, brandId)
+                .eq(null != catelogId && catelogId != 0, SpuInfo::getCatelogId, catelogId)
+                .eq(null != status && !ProductConstant.SPU_UNDEFINED_PUBLISH.getCode().equals(status), SpuInfo::getPublishStatus, status);
+        return new PageResult<SpuInfo>().page(this, pageParams, lambdaQueryWrapper);
     }
 
 }

@@ -45,7 +45,7 @@ public class SpuInfo implements Serializable {
     private BigDecimal weight;
 
     @ApiModelProperty("上架状态[0 - 下架，1 - 上架]")
-    private Byte publishStatus;
+    private Integer publishStatus;
     @ApiModelProperty("创建时间")
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;

@@ -2,6 +2,8 @@ package com.hngc.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.common.exception.MyException;
+import com.common.utils.PageParams;
+import com.common.utils.PageResult;
 import com.hngc.product.entity.SpuInfo;
 import com.hngc.product.vo.SpuSaveVo;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,4 +27,15 @@ public interface SpuInfoService extends IService<SpuInfo> {
      */
     @Transactional
     boolean syncSaveSpuInfo(SpuSaveVo spuSaveVo) throws MyException;
+
+    /**
+     * 分页获取sku信息
+     *
+     * @param pageParams
+     * @param brandId
+     * @param status
+     * @param catelogId
+     * @return
+     */
+    PageResult<SpuInfo> pageInfo(PageParams pageParams, Long brandId, Integer status, Long catelogId);
 }

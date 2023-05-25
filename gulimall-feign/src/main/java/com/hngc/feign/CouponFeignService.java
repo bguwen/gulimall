@@ -4,6 +4,7 @@ import com.common.to.SkuReductionTo;
 import com.common.to.SpuBoundTo;
 import com.common.utils.Result;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -28,4 +29,8 @@ public interface CouponFeignService {
      */
     @PostMapping("/skuFullReduction/saveInfo")
     Result saveSkuReduction(@RequestBody SkuReductionTo skuReductionTo);
+
+
+    @GetMapping("/coupon/member/list")
+    Result memberCoupons();
 }

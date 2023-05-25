@@ -1,8 +1,17 @@
 package com.hngc.product.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.common.utils.PageParams;
+import com.common.utils.PageResult;
+import com.common.utils.Result;
+import com.hngc.product.entity.SkuInfo;
+import com.hngc.product.service.SkuInfoService;
 import io.swagger.annotations.Api;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 
 /**
  * <p>
@@ -16,6 +25,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/skuInfo")
 public class SkuInfoController {
+    @Autowired
+    private SkuInfoService skuInfoService;
 
-
+    /**
+     * 分页获取sku信息
+     *
+     * @param pageParams
+     * @return
+     */
+    @PostMapping("page")
+    public Result page(@RequestBody PageParams pageParams, @RequestParam(required = false) Long brandId,
+                       @RequestParam(required = false) Long catelogId,
+                       @RequestParam(required = false) BigDecimal min, @RequestParam(required = false) BigDecimal max) {
+        return Result.success().put("page", skuInfoService.pageInfo(pageParams, brandId, catelogId, min, max));
+    }
 }

@@ -33,9 +33,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
-            <version>3.0.5</version>
+            <groupId>com.hngc</groupId>
+            <artifactId>gulimall-feign</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
