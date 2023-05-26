@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        # 服务注册地址
+        server-addr: 127.0.0.1:8848
+      config:
+        # 配置中心地址
+        server-addr: 127.0.0.1:8848
+        # 配置文件格式
+        file-extension: yaml
+        namespace: ae7fa632-46f0-4f61-9478-e92e521615c0
+        extension-configs: #扩展配置
+          - data-id: mybatis-plus-dev.yaml
+            group: dev
+            refresh: true

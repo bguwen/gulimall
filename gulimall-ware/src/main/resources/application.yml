@@ -10,10 +10,6 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: root
-  cloud:
-    nacos:
-      discovery:
-        server-addr: 127.0.0.1:8848
   application:
     name: gulimall-ware
 knife4j:

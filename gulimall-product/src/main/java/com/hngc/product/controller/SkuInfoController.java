@@ -36,4 +36,15 @@ public class SkuInfoController {
                        @RequestParam(required = false) BigDecimal min, @RequestParam(required = false) BigDecimal max) {
         return Result.success().put("page", skuInfoService.pageInfo(pageParams, brandId, catelogId, min, max));
     }
+
+    /**
+     * 根据skuId获取sku信息
+     *
+     * @param skuId
+     * @return
+     */
+    @GetMapping("info/{skuId}")
+    public Result info(@PathVariable Long skuId) {
+        return Result.success().put("skuInfo", skuInfoService.getById(skuId));
+    }
 }

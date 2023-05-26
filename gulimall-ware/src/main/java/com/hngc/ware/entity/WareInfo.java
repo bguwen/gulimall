@@ -3,9 +3,14 @@ package com.hngc.ware.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.common.valid.AddGroup;
+import com.common.valid.UpdateGroup;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.io.Serializable;
 
 /**
@@ -22,16 +27,18 @@ public class WareInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @NotNull(groups = {UpdateGroup.class})
+    @Null(groups = {AddGroup.class})
     @ApiModelProperty("id")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
-
+    @NotBlank(groups = {AddGroup.class, UpdateGroup.class})
     @ApiModelProperty("仓库名")
     private String name;
-
+    @NotBlank(groups = {AddGroup.class, UpdateGroup.class})
     @ApiModelProperty("仓库地址")
     private String address;
-
+    @NotBlank(groups = {AddGroup.class, UpdateGroup.class})
     @ApiModelProperty("区域编码")
     private String areacode;
 
@@ -70,10 +77,10 @@ public class WareInfo implements Serializable {
     @Override
     public String toString() {
         return "WareInfo{" +
-        "id = " + id +
-        ", name = " + name +
-        ", address = " + address +
-        ", areacode = " + areacode +
-        "}";
+                "id = " + id +
+                ", name = " + name +
+                ", address = " + address +
+                ", areacode = " + areacode +
+                "}";
     }
 }

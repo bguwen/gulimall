@@ -1,6 +1,8 @@
 package com.hngc.ware.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.common.utils.PageParams;
+import com.common.utils.PageResult;
 import com.hngc.ware.entity.WareInfo;
 
 /**
@@ -13,4 +15,11 @@ import com.hngc.ware.entity.WareInfo;
  */
 public interface WareInfoService extends IService<WareInfo> {
 
+    /**
+     * 分页查询仓库信息
+     *
+     * @param pageParams
+     * @return
+     */
+    PageResult<WareInfo> pageInfo(PageParams pageParams);
 }
